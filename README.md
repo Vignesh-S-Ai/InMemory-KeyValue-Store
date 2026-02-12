@@ -1,47 +1,96 @@
-🧠 Architecture (High-Level)
+# 🚀 Mini In-Memory Key-Value Store (C++)
+
+A lightweight in-memory key-value store implemented in C++17.
+
+This project is the foundation for building a high-performance, thread-safe, cache-enabled storage system.
+
+---
+
+## 📌 Features (Phase 1)
+
+- In-memory storage using `std::unordered_map`
+- Command-line interface (CLI)
+- O(1) average time complexity for `SET`, `GET`, and `DEL`
+- Modular project structure (Header + Implementation separation)
+
+---
+
+## 🧱 Architecture
 
 User Input (CLI)
-↓
+        ↓
 Command Parser
-↓
-Key-Value Store Core
-↓
-(optional) LRU Eviction
-↓
-Thread Safety Layer
-
-
-Keep it clean like previous projects.
+        ↓
+KVStore Class
+        ↓
+std::unordered_map (Storage Layer)
 
 ---
 
-# 🥇 Phase 1: Basic KV Store (Single-Threaded)
+## ⚙️ Supported Commands
+SET key value
+GET key
+DEL key
+EXIT
 
-We start simple.
 
-No threads yet.
-No LRU yet.
-Just correct core logic.
+### Example
+SET name Vignesh
+OK
+GET name
+Vignesh
+DEL name
+Deleted
+GET name
+NULL
 
 ---
 
-## ✅ Step 1: Create `KVStore.h`
+## 🛠 Build & Run
 
-```cpp
-#ifndef KVSTORE_H
-#define KVSTORE_H
+### Compile
+g++ -std=c++17 src/KVStore.cpp src/main.cpp -O2 -o kvstore
 
-#include <unordered_map>
-#include <string>
 
-class KVStore {
-private:
-    std::unordered_map<std::string, std::string> store;
+### Run
+kvstore.exe
 
-public:
-    void set(const std::string& key, const std::string& value);
-    std::string get(const std::string& key);
-    bool del(const std::string& key);
-};
 
-#endif
+---
+
+## 🧠 Concepts Demonstrated
+
+- Hash-based storage
+- Command parsing
+- Modular C++ project design
+- Basic system architecture layering
+
+---
+
+## 🔮 Upcoming Enhancements
+
+- Capacity-limited LRU eviction
+- Thread-safe access
+- ThreadPool-based request handling
+- Benchmarking and throughput measurement
+
+---
+
+## 👤 Author
+
+Vignesh S  
+Computer Science Undergraduate  
+Interests: Systems Programming, Concurrency, Performance Engineering
+
+
+
+
+
+
+
+
+
+
+
+
+
