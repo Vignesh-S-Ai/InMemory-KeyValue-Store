@@ -38,7 +38,7 @@ int main() {
             break;
         }
         else {
-            std::cout << "Invalid command\n";
+            std::cout << "Invalid cmand\n";
         }
     }
 
