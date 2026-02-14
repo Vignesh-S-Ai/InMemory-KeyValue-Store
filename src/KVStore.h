@@ -1,53 +1,31 @@
-#include "KVStore.h"
+#ifndef KVSTORE_H
+#define KVSTORE_H
 
-KVStore::KVStore(size_t cap) : capacity(cap) {}
+#include <unordered_map>
+#include <list>
+#include <string>
+#include <mutex>
 
-void KVStore::set(const std::string& key, const std::string& value) {
+class KVStore {
+private:
+    size_t capacity;
 
-    // If key exists → update + move to front
-    if (cacheMap.find(key) != cacheMap.end()) {
-        cacheList.erase(cacheMap[key]);
-    }
-    // If capacity reached → evict LRU
-    else if (cacheList.size() >= capacity) {
-        auto lru = cacheList.back();
-        cacheMap.erase(lru.first);
-        cacheList.pop_back();
-    }
+    std::list<std::pair<std::string, std::string>> cacheList;
 
-    cacheList.push_front({key, value});
-    cacheMap[key] = cacheList.begin();
-}
+    std::unordered_map<
+        std::string,
+        std::list<std::pair<std::string, std::string>>::iterator
+    > cacheMap;
 
-std::string KVStore::get(const std::string& key) {
+    std::mutex cacheMutex;   // 🔐 Thread safety
 
-    if (cacheMap.find(key) == cacheMap.end())
-        return "NULL";
+public:
+    KVStore(size_t cap);
 
-    auto node = cacheMap[key];
-    std::string value = node->second;
+    void set(const std::string& key, const std::string& value);
+    std::string get(const std::string& key);
+    bool del(const std::string& key);
+    void display();
+};
 
-    // Move accessed key to front
-    cacheList.erase(node);
-    cacheList.push_front({key, value});
-    cacheMap[key] = cacheList.begin();
-
-    return value;
-}
-
-bool KVStore::del(const std::string& key) {
-
-    if (cacheMap.find(key) == cacheMap.end())
-        return false;
-
-    cacheList.erase(cacheMap[key]);
-    cacheMap.erase(key);
-    return true;
-}
-
-void KVStore::display() {
-    for (auto &p : cacheList) {
-        std::cout << "(" << p.first << ":" << p.second << ") ";
-    }
-    std::cout << std::endl;
-}
+#endif
