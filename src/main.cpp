@@ -3,11 +3,13 @@
 #include <sstream>
 
 int main() {
-    KVStore kv;
+
+    KVStore kv(3);   // Set capacity here
+
     std::string line;
 
-    std::cout << "Mini In-Memory Key-Value Store\n";
-    std::cout << "Commands: SET key value | GET key | DEL key | EXIT\n";
+    std::cout << "Mini In-Memory Key-Value Store (LRU Enabled)\n";
+    std::cout << "Commands: SET key value | GET key | DEL key | SHOW | EXIT\n";
 
     while (true) {
         std::cout << "> ";
@@ -34,11 +36,14 @@ int main() {
             else
                 std::cout << "Key not found\n";
         }
+        else if (command == "SHOW") {
+            kv.display();
+        }
         else if (command == "EXIT") {
             break;
         }
         else {
-            std::cout << "Invalid cmand\n";
+            std::cout << "Invalid command\n";
         }
     }
 
