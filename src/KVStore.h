@@ -6,7 +6,9 @@
 #include <string>
 #include <mutex>
 
-class KVStore {
+// ==================== LRU Shard ====================
+
+class LRUShard {
 private:
     size_t capacity;
 
